@@ -42,3 +42,4 @@ $ docker run --rm -it matthewadams12/match it '^not it$'
 $ echo $?
 1
 ```
+
