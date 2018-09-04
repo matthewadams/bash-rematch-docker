@@ -201,10 +201,10 @@ if [ "$BRANCH" == "$MASTER" ]; then # this will be either an rc, resulting in a 
   fi
 
   # create release branch
-  MAJOR="$(echo "$MATCHES" | awk '{ print $1 }')"
-  MINOR="$(echo "$MATCHES" | awk '{ print $2 }')"
+  MAJOR="$(echo "$MATCHES" | awk '{ print $2 }')"
+  MINOR="$(echo "$MATCHES" | awk '{ print $3 }')"
   PATCH=0
-  PRE="$(echo "$MATCHES" | awk '{ print $3 }')"
+  PRE="$(echo "$MATCHES" | awk '{ print $4 }')"
 
   case "$RELEASE_LEVEL" in
   rc) # then it's time to create a new release branch
@@ -271,10 +271,10 @@ else
     echo "INFO: version $VERSION matches expected format for branch $BRANCH"
 fi
 
-MAJOR="$(echo "$MATCHES" | awk '{ print $1 }')"
-MINOR="$(echo "$MATCHES" | awk '{ print $2 }')"
-PATCH="$(echo "$MATCHES" | awk '{ print $3 }')"
-PRE="$(echo "$MATCHES" | awk '{ print $4 }')"
+MAJOR="$(echo "$MATCHES" | awk '{ print $2 }')"
+MINOR="$(echo "$MATCHES" | awk '{ print $3 }')"
+PATCH="$(echo "$MATCHES" | awk '{ print $4 }')"
+PRE="$(echo "$MATCHES" | awk '{ print $5 }')"
 
 case "$RELEASE_LEVEL" in
   major|minor|patch)
