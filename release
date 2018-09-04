@@ -117,7 +117,7 @@ else
 fi
 
 BRANCH="$(git status | head -n 1 | awk '{ print $3 }')"
-if ! $MATCH "$BRANCH" '^(master|v[0-9]{1,}\.[0-9]{1,})$'; then # it is not a master or a release branch
+if ! $MATCH '^(master|v[0-9]{1,}\.[0-9]{1,})$' "$BRANCH"; then # it is not a master or a release branch
   echo 'ERROR: you can only release from the master branch or release branches (vmajor.minor)!' >&2
   exit 3
 else
@@ -158,7 +158,7 @@ echo "INFO: ok to proceed with $RELEASE_LEVEL from branch $BRANCH"
 echo "INFO: determining current version from $VERSION_FILE"
 
 VERSION="$(getVersion)"
-if ! $MATCH "$VERSION" '\-(pre|rc)\.[0-9]{1,}$'; then
+if ! $MATCH '\-(pre|rc)\.[0-9]{1,}$' "$VERSION"; then
   echo 'ERROR: repository is in an inconsistent state: version does NOT end in a prerelease suffix!' >&2
   exit 3
 fi
@@ -192,7 +192,7 @@ applyChanges() {
 }
 
 if [ "$BRANCH" == "$MASTER" ]; then # this will be either an rc, resulting in a new release branch, or a pre
-  MATCHES="$($MATCH "$VERSION" '^([0-9]{1,})\.([0-9]{1,})\.0\-pre\.([0-9]{1,})$')"
+  MATCHES="$($MATCH '^([0-9]{1,})\.([0-9]{1,})\.0\-pre\.([0-9]{1,})$' "$VERSION")"
   if [ -z "$MATCHES" ]; then
     echo "ERROR: the version does not match the format of major.minor.0-pre.n required in the $MASTER branch." >&2
     exit 8
@@ -263,7 +263,7 @@ fi
 
 # If we get this far, we are releasing something from a release branch.
 
-MATCHES="$($MATCH "$VERSION" '^([0-9]{1,})\.([0-9]{1,})\.([0-9]{1,})\-rc\.([0-9]{1,})$')"
+MATCHES="$($MATCH '^([0-9]{1,})\.([0-9]{1,})\.([0-9]{1,})\-rc\.([0-9]{1,})$' "$VERSION")"
 if [ -z "$MATCHES" ]; then
   echo "ERROR: the version does not match the format of major.minor.patch-rc.n required in the release branch." >&2
   exit 8
